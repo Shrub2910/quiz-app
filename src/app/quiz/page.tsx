@@ -10,6 +10,12 @@ type Question = {
     incorrect_answers: string[]
 }
 
+function decodeHTMLEntities(str: string) {
+  const txt = document.createElement('textarea');
+  txt.innerHTML = str;
+  return txt.value;
+}
+
 export default function Quiz() {
     const [questions, setQuestions] = useState<Question[]>([])
     const [loading, setLoading] = useState(true)
@@ -64,7 +70,7 @@ export default function Quiz() {
         <main>
             { questionNumber <= 9? (
                 <div className="flex min-h-screen items-center bg-white flex-col">
-                <h1 className="text-5xl my-6">Question number {questionNumber + 1}: {questions[questionNumber].question}</h1>
+                <h1 className="text-5xl my-6">Question number {questionNumber + 1}: {decodeHTMLEntities(questions[questionNumber].question)}</h1>
 
                 <ul>
                     {answers.map((answer, i) => (
@@ -73,7 +79,7 @@ export default function Quiz() {
                             if (answer === questions[questionNumber].correct_answer) {
                                 setQuestionsCorrect(questionsCorrect + 1)
                             }
-                        }}>{answer}</li>
+                        }}>{decodeHTMLEntities(answer)}</li>
                     ))}
                 </ul>
 
